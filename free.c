@@ -1,0 +1,84 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinchen <jinchen@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/25 17:04:54 by jinchen           #+#    #+#             */
+/*   Updated: 2026/02/07 21:50:32 by jinchen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+#include "utils.h"
+#include "free.h"
+
+void	ft_free(int *unordered, int *sorted, char *sms)
+{
+	free(unordered);
+	free(sorted);
+	error_message(sms);
+}
+
+void	free_matrix(char **matrix, int size)
+{
+	--size;
+	while (size >= 0)
+	{
+		free(matrix[size]);
+		matrix[size] = NULL;
+		--size;
+	}
+	free(matrix);
+	matrix = NULL;
+}
+
+void	free_and_exit(char **matrix, int size, char *sms)
+{
+	free_matrix(matrix, size);
+	error_message(sms);
+}
+
+void	free_list_and_exit(t_stack *stack, int *arrays[], int i)
+{
+	int		j;
+	t_lst	*temp;
+
+	j = -1;
+	free(arrays[0]);
+	free(arrays[1]);
+	while (++j < i)
+	{
+		temp = stack->head;
+		stack->head = stack->head->next;
+		free(temp);
+	}
+	error_message("Error\n");
+}
+
+void	free_stacks_and_arrays(t_stack *st_a, t_stack *st_b, int *a1, int *a2)
+{
+	int		i;
+	t_lst	*temp;
+
+	i = -1;
+	while (++i < st_a->nodes)
+	{
+		temp = st_a->head;
+		st_a->head = st_a->head->next;
+		free(temp);
+	}
+	if (st_b->head)
+	{
+		i = -1;
+		while (++i < st_b->nodes)
+		{
+			temp = st_b->head;
+			st_b->head = st_b->head->next;
+			free(temp);
+		}
+	}
+	free(a1);
+	free(a2);
+}
